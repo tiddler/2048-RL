@@ -29,15 +29,21 @@ class Env2048(gym.Env):
       raise Exception('Invalid Action Input')
     # in case users still send action after done without reset
     if self._done:
-      self.reset()
+      raise Exception('Game is over')
     if self._can_move(action):
       reward = self._combine(action)
       self._add_tile()
       self._highest = np.max(self._board)
-      self._score += reward
+      self._done = self._check_terminate()
     else:
-      reward = 0
-    self._done = self._check_terminate()
+      # reward = 0
+      # set a negative reward to avoid stuck...
+      reward = -10
+      # or regard it as vital error and game is over
+    self._score += reward
+    if self._score < -100:
+      self._done = True
+
     self._info = (self._score, self._available, self._highest)
     return self._board.flatten(), reward, self._done, self._info
 
@@ -50,6 +56,7 @@ class Env2048(gym.Env):
     self._add_tile()
     self._add_tile()
     self._highest = np.max(self._board)
+    return self._board.flatten()
 
   def render(self):
     print('Score: {}'.format(self._score))
