@@ -25,9 +25,9 @@ class Env2048(gym.Env):
     self.reset()
 
   def step(self, action):
-    # in case users still send action after done without reset
     if action not in self._action_set:
       raise Exception('Invalid Action Input')
+    # in case users still send action after done without reset
     if self._done:
       self.reset()
     if self._can_move(action):
@@ -52,8 +52,8 @@ class Env2048(gym.Env):
     self._highest = np.max(self._board)
 
   def render(self):
-    print(f'Score: {self._score}')
-    print(f'Highest: {self._highest}')
+    print('Score: {}'.format(self._score))
+    print('Highest: {}'.format(self._highest))
     print(self._board)
 
   def _add_tile(self):

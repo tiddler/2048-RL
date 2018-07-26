@@ -16,4 +16,4 @@ if __name__ == '__main__':
     else:
       action = 3
     state, reward, done, info = env.step(action)
-  input(f'finish!')
+  input('finish! Press Enter to exit')
